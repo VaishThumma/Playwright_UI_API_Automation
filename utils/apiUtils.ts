@@ -1,0 +1,47 @@
+import { APIRequestContext } from '@playwright/test';
+import * as fs from 'fs';
+import testData from './testData.json';
+
+
+export class APIUtils {
+
+
+
+    constructor(private request: APIRequestContext) {
+
+    }
+
+    getToken() {
+        const fileText = fs.readFileSync('playwright/.auth/token.json', 'utf-8');
+        const fileParsed = JSON.parse(fileText);
+        return fileParsed.token;
+
+    }
+
+    getUserInfo() {
+        const filetext = fs.readFileSync('playwright/.auth/userInfo.json', 'utf-8');
+        const fileParsed = JSON.parse(filetext);
+        return fileParsed;
+
+    }
+
+
+    async createArticle() {
+        const articleResponse = await this.request.post('https://api.realworld.show/api/articles', {
+            data: {
+                "article": {
+                    "title": testData.articleTitle,
+                    "description": testData.articleDescription,
+                    "body": testData.articleBody,
+                    "tagList": [
+                        testData.tag
+                    ]
+                }
+            },
+            headers: {
+                Authorization: this.getToken()
+            }
+        })
+        return articleResponse;
+    }
+}
