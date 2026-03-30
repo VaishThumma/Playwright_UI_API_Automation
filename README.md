@@ -1,4 +1,4 @@
-# Playwright UI + API Automation — Conduit Web Application
+# Playwright UI + API Automation - Conduit Web Application
 
 A hybrid test automation suite built with Playwright and TypeScript, covering both API and UI layers of the [Conduit](https://demo.realworld.show/) web application.
 
@@ -10,10 +10,10 @@ This approach is a form of integration testing, confirming that data flows corre
 
 ## Tech Stack 
 
-- [Playwright](https://playwright.dev/) — UI and API test execution
-- TypeScript — strongly typed test code
-- Page Object Model — maintainable UI interaction layer
-- GitHub Actions — CI pipeline for automated test runs on every push
+- [Playwright](https://playwright.dev/) - UI and API test execution
+- TypeScript - strongly typed test code
+- Page Object Model - maintainable UI interaction layer
+- GitHub Actions - CI pipeline for automated test runs on every push
 
 ## Test Scenarios
 
