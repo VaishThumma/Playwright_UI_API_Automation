@@ -13,12 +13,20 @@ test('validate new article creation', async ({ request }) => {
 
     expect(newArticleResponse.status()).toBe(201);
     const articleResponseJSON = await newArticleResponse.json();
-    //console.log('created article title:', articleResponseJSON.article.title);
+
+    // Verift article title
     expect(articleResponseJSON.article.title).toEqual(testData.articleTitle);
-    // console.log('created article body:', articleResponseJSON.article.body);
+
+    // verify article body
     expect(articleResponseJSON.article.body).toEqual(testData.articleBody);
-    //console.log('author:', articleResponseJSON.article.author.username);
+
+    // verify authorname
     expect(articleResponseJSON.article.author.username).toEqual(userInfo.username)
 
+    // Verfiy if slug exists
+    expect(articleResponseJSON.article.slug.length).toBeGreaterThan(0);
+
+    // verify if slug is in correct format
+    expect(articleResponseJSON.article.slug).toMatch(/^[a-z0-9-]+$/);
 
 })

@@ -51,6 +51,20 @@ export default defineConfig({
       name: 'apitests',
       testMatch: /apiTests\.spec\.ts/,
       dependencies: ['setup']
+    },
+
+    {
+      name: 'hybridtests',
+      testMatch: /hybridTests\.spec\.ts/,
+      use: {
+        browserName: 'chromium',
+        headless: true,
+
+        storageState: 'playwright/.auth/userStorageState.json'
+      },
+      dependencies: ['setup']
     }
+
+
   ]
 });

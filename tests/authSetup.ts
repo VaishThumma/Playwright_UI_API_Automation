@@ -35,7 +35,7 @@ setup('create new user and save authentication token', async ({ request, page })
     //write the token value as json string in a file
     fs.writeFileSync('playwright/.auth/token.json', JSON.stringify({ token: authToken }))
 
-    // write the generated new user informationn as json string in a file
+    // write the generated new user information as json string in a file
     fs.writeFileSync('playwright/.auth/userInfo.json', JSON.stringify(
         {
             username: newUser.username,

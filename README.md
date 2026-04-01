@@ -20,10 +20,13 @@ This approach is a form of integration testing, confirming that data flows corre
 ### Completed
 - User registration via API with token persistence and browser storageState setup
 - Article creation via API with response validation and author assertion
+- Hybrid integration test where article is create via API and UI is validated for successful 
+  creation
+
+- This demonstrates integration testing. API calls are used to set up state, and UI 
+  assertions verify that the frontend correctly reflects what the backend returns. This validates the contract between the two layers.
 
 ### In Progress
-- Create article via API, verify it appears correctly in the UI feed
-- Add comment via API and verify it correctly appears in UI
 - Delete article via API, verify it is no longer visible in the UI
 
 ## Running Tests Locally
@@ -35,6 +38,10 @@ npx playwright test
 To run only the API tests:
 ```bash
 npx playwright test tests/apiTests.spec.ts
+```
+To run only the hybrid tests:
+```bash
+npx playwright test tests/hybridTests.spec.ts
 ```
 
 To view the HTML report after a run:
