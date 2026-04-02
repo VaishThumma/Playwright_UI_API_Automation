@@ -1,50 +1,66 @@
-# Playwright UI + API Automation - Conduit Web Application
+# Playwright UI + API Automation | Conduit Web Application
 
-A hybrid test automation suite built with Playwright and TypeScript, covering both API and UI layers of the [Conduit](https://demo.realworld.show/) web application.
+A hybrid test automation suite built with Playwright and TypeScript, covering both API and 
+UI layers of the [Conduit](https://demo.realworld.show/) web application.
+
+![CI](https://github.com/VaishThumma/Playwright_UI_API_Automation/actions/workflows/playwright.yml/badge.svg)
 
 ## Why Hybrid API + UI Testing
 
-Most automation projects test either the UI or the API in isolation. This project deliberately combines both to validate that the frontend and backend stay in sync. For example, verifying that an article created through the API actually appears correctly in the browser, or that a resource deleted via the API is no longer accessible in the UI.
+Most automation projects test either the UI or the API in isolation. This project 
+deliberately combines both to validate that the frontend and backend stay in sync,
+verifying that an article created through the API appears correctly in the browser, and 
+that a resource deleted via the API is no longer accessible in the UI.
 
-This approach is a form of integration testing, confirming that data flows correctly across system boundaries, not just that each layer works on its own. It reflects how real systems can fail: not within a single layer, but in the handoff between them.
+This approach is a form of integration testing, confirming that data flows correctly across 
+system boundaries, not just that each layer works on its own. Real systems often fail not 
+within a single layer, but in the handoff between them.
 
-## Tech Stack 
+## Tech Stack
 
 - [Playwright](https://playwright.dev/) - UI and API test execution
 - TypeScript - strongly typed test code
 - Page Object Model - maintainable UI interaction layer
-- GitHub Actions - CI pipeline for automated test runs on every push
+- GitHub Actions - CI pipeline, triggered on every push
 
 ## Test Scenarios
 
 ### Completed
 - User registration via API with token persistence and browser storageState setup
-- Article creation via API with response validation and author assertion
-- Hybrid integration test where article is create via API and UI is validated for successful 
-  creation
+- Article creation via API with response validation, author assertion and slug format check
+- Article lifecycle integration test - article created via API, verified in UI feed, 
+  deleted via API, confirmed removed from UI
 
-- This demonstrates integration testing. API calls are used to set up state, and UI 
-  assertions verify that the frontend correctly reflects what the backend returns. This validates the contract between the two layers.
+### Planned
+- Negative test: unauthorised user cannot delete another user's article (access control)
 
-### In Progress
-- Delete article via API, verify it is no longer visible in the UI
+## Project Structure
+```
+tests/
+  authSetup.ts          — global auth setup, runs before all tests
+  apiTests.spec.ts      — API layer tests
+  hybridTests.spec.ts   — combined UI + API integration tests
+pages/
+  HomePage.ts           — Page Object for the Conduit home feed
+utils/
+  apiUtils.ts           — reusable API methods
+  generateUser.ts       — dynamic test user generation
+  testData.json         — centralised test data
+  constants.ts          — shared URL constants
+```
 
 ## Running Tests Locally
 ```bash
 npm install
-npx playwright test
+npm test
 ```
 
-To run only the API tests:
+To run specific test suites:
 ```bash
-npx playwright test tests/apiTests.spec.ts
-```
-To run only the hybrid tests:
-```bash
-npx playwright test tests/hybridTests.spec.ts
+npm run test:api       # API tests only
+npm run test:hybrid    # Hybrid UI + API tests only
+npm run report         # Open HTML test report
 ```
 
-To view the HTML report after a run:
-```bash
-npx playwright show-report
-```
+> Note: Tests target a live public demo API which may occasionally be unavailable. 
+> All tests pass when the environment is stable - CI history reflects this.

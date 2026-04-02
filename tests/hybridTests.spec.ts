@@ -3,32 +3,46 @@ import { HomePage } from '../pages/HomePage';
 import { APIUtils } from '../utils/apiUtils';
 import testData from '../utils/testData.json';
 
-test('verify article is successfully created in UI', async ({ page, request }) => {
+test('article lifecycle: create and delete via API, validate appropriate reflections in UI', async ({ page, request }) => {
 
-    // Create class objects
+    // create class objects
     const homePage = new HomePage(page);
     const apiUtils = new APIUtils(request);
 
-    //assert if the new article is created
-    await apiUtils.createArticle();
+    // create new article via api
+    const newArticleResponse = await apiUtils.createArticle();
+    expect(newArticleResponse.status()).toBe(201);
+
+    // extract the slug value of the new article created
+    const newArticleResponseJSON = await newArticleResponse.json();
+    const slug = newArticleResponseJSON.article.slug;
+    const articleTitle = newArticleResponseJSON.article.title;
+
+    // fetch user information used to signup and login
     const user = apiUtils.getUserInfo();
 
     // navigate to the app
     await page.goto('/');
 
-    // Ensre user is created and login is successful
+    // ensure user is logged-in
     await expect((homePage.navBarItems).filter({ hasText: user.username })).toBeVisible();
 
-    const newArticle = homePage.articlePreviewCards.filter({ hasText: testData.articleTitle }).first();
-    const newTag = homePage.sidebarTagList.filter({ hasText: testData.tag });
-    const author = homePage.getAuthorName(newArticle).filter({ hasText: user.username });
+    const article = homePage.articlePreviewCards.filter({ hasText: articleTitle })
+    const tag = homePage.sidebarTagList.filter({ hasText: testData.tag });
+    const author = homePage.getAuthorName(article).filter({ hasText: user.username });
 
     // assert if new article created via API is successfully visible on UI
-    await expect(newArticle).toBeVisible();
-    await expect(newTag).toBeVisible();
+    await expect(article).toBeVisible();
+    await expect(tag).toBeVisible();
     await expect(author).toBeVisible();
 
+    // delete the article via api
+    const deleteArticleResponse = await apiUtils.deleteArticle(slug);
+    expect(deleteArticleResponse.status()).toBe(204);  //no content
+
+    // reload the page and assert if the article is no longer visible on UI
+    await page.reload();
+    await expect(article).not.toBeVisible();
+
+
 })
-
-
-

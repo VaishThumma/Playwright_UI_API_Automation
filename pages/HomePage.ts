@@ -23,8 +23,9 @@ export class HomePage {
         return this.sidebarTags;
     }
 
-    getAuthorName(newArticle: Locator) {
-        return newArticle.locator('.author');
+    //// Method rather than getter because author scope depends on the article locator passed in
+    getAuthorName(articleLocator: Locator) {
+        return articleLocator.locator('.author');
     }
 
     get navBarItems() {
