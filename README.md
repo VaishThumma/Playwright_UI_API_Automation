@@ -31,8 +31,6 @@ within a single layer, but in the handoff between them.
 - Article lifecycle integration test - article created via API, verified in UI feed, 
   deleted via API, confirmed removed from UI
 
-### Planned
-- Negative test: unauthorised user cannot delete another user's article (access control)
 
 ## Project Structure
 ```
